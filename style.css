@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    margin: 2rem;
+}
+container {
+    padding: 2rem;
+}
+grid {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, 200px);
+    margin: 2rem;
+}
+
+.cell {
+    border: 1px solid black;
+}
+
+.over {
+    border: 1px dotted red;
+}
+
+img {
+    cursor: move;
+    height: 8rem;
+}
