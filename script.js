@@ -23,10 +23,35 @@ winningCombos.forEach((combo) => {
   }
 })
 
+winningCombos.forEach((combo) => {
+  const match = combo.every((elem) => playerOMoves.includes(elem))
+  if (match) {
+    console.log('yes')
+  }
+})
+// players
+const playerX = 'Player X'
+const playerO = 'Player O'
+const players = [
+  { name: playerX, piece: 'x' },
+  { name: playerO, piece: 'o' }
+]
+let activePlayer = players[0]
+const switchPlayer = () => {
+  activePlayer = activePlayer === players[0] ? players[1] : players[0]
+}
+function getActivePlayer () {
+  return activePlayer
+}
+
 // placing game pieces
+
 gameboard.forEach((cell) => {
   cell.addEventListener('click', printId)
   function printId () {
-    console.log(cell.id)
+    getActivePlayer()
+    if (activePlayer === players[0]) console.log(`${cell.id} - X`)
+    else if (activePlayer === players[1]) console.log(`${cell.id} - O`)
+    switchPlayer()
   }
 })
