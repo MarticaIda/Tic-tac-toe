@@ -42,29 +42,30 @@ function gameController () {
   const board = Gameboard()
   const player = Players()
   const result = document.getElementById('result')
-
   board.getBoard().forEach((cell) => {
     cell.addEventListener('click', makeMove)
     function makeMove () {
-      if (cell.textContent === '') {
-        player.getActivePlayer().moves.push(cell.id)
-        cell.textContent = player.getActivePlayer().marker
+      const activePlayer = player.getActivePlayer()
+      // if (result.textContent.includes('win')) {
+      //   activePlayer.moves = []
+      // } else 
+      if (
+        cell.textContent === '' &&
+        !result.textContent.includes('win')
+      ) {
+        activePlayer.moves.push(cell.id)
+        cell.textContent = activePlayer.marker
       }
       // checking against winning combinations
       board.getWinningCombos().forEach((combo) => {
-        const match = combo.every((elem) =>
-          player.getActivePlayer().moves.includes(elem)
-        )
+        const match = combo.every((elem) => activePlayer.moves.includes(elem))
         if (match) {
-          result.textContent = `${player.getActivePlayer().name} wins`
-          // stop the game, clear player moves arrays
-          player.getActivePlayer().moves = []
+          activePlayer.moves = []
+          result.textContent = `${activePlayer.name} wins`
         }
       })
       player.switchPlayer()
-      console.log(
-        `${player.getActivePlayer().name} ` + player.getActivePlayer().moves
-      )
+      console.log(`${activePlayer.name} ` + activePlayer.moves)
     }
   })
 }
