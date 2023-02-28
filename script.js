@@ -34,15 +34,26 @@ const Players = () => {
   let activePlayer
   form.addEventListener('submit', (e) => {
     e.preventDefault()
-    const player = createPlayer(
-      document.getElementById('username').value,
-      document.getElementById('marker').value
-    )
-    players.push(player)
-    activePlayer = players[0]
     const greeting = document.createElement('span')
-    greeting.textContent = `${player.name} enters the game with ${player.marker}`
-    body.appendChild(greeting)
+    const name = document.getElementById('username').value
+    const marker = document.getElementById('marker').value
+    const player = createPlayer(name, marker)
+    if (players.length === 0) {
+      players.push(player)
+      greeting.textContent = `${player.name} enters the game with ${player.marker}`
+      body.appendChild(greeting)
+    } else {
+      if (players[0].marker === '' || players[0].marker !== player.marker) {
+        players.push(player)
+        greeting.textContent = `${player.name} enters the game with ${player.marker}`
+        body.appendChild(greeting)
+      } else {
+        greeting.textContent =
+          'This marker is taken. Please choose another marker'
+        body.appendChild(greeting)
+      }
+    }
+    activePlayer = players[0]
   })
   const switchPlayer = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0]
