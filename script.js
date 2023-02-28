@@ -20,12 +20,30 @@ function Gameboard () {
   }
 }
 
-const Players = (playerX = 'Player X', playerO = 'Player O') => {
-  const players = [
-    { name: playerX, marker: 'X', moves: [] },
-    { name: playerO, marker: 'O', moves: [] }
-  ]
-  let activePlayer = players[0]
+const Players = () => {
+  const form = document.querySelector('form')
+  const body = document.querySelector('body')
+  const players = []
+  function createPlayer (name, marker, moves = []) {
+    return {
+      name,
+      marker,
+      moves
+    }
+  }
+  let activePlayer
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const player = createPlayer(
+      document.getElementById('username').value,
+      document.getElementById('marker').value
+    )
+    players.push(player)
+    activePlayer = players[0]
+    const greeting = document.createElement('span')
+    greeting.textContent = `${player.name} enters the game with ${player.marker}`
+    body.appendChild(greeting)
+  })
   const switchPlayer = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0]
   }
@@ -48,11 +66,8 @@ function gameController () {
       const activePlayer = player.getActivePlayer()
       // if (result.textContent.includes('win')) {
       //   activePlayer.moves = []
-      // } else 
-      if (
-        cell.textContent === '' &&
-        !result.textContent.includes('win')
-      ) {
+      // } else
+      if (cell.textContent === '' && !result.textContent.includes('won')) {
         activePlayer.moves.push(cell.id)
         cell.textContent = activePlayer.marker
       }
@@ -61,7 +76,7 @@ function gameController () {
         const match = combo.every((elem) => activePlayer.moves.includes(elem))
         if (match) {
           activePlayer.moves = []
-          result.textContent = `${activePlayer.name} wins`
+          result.textContent = `Congrats ${activePlayer.name}, you won!`
         }
       })
       player.switchPlayer()
@@ -70,3 +85,5 @@ function gameController () {
   })
 }
 const game = gameController()
+
+// need to make reset
