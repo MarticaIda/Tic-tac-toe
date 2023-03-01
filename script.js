@@ -1,5 +1,13 @@
 function Gameboard () {
+  const grid = document.querySelector('grid')
+  for (let i = 1; i <= 9; i++) {
+    const cell = document.createElement('div')
+    grid.appendChild(cell)
+    cell.setAttribute('id', i)
+    cell.setAttribute('class', 'cell')
+  }
   const board = document.querySelectorAll('.cell')
+  const getBoard = () => board
   // gameboard.forEach((cell) => (cell.textContent = ''))
   const [c1, c2, c3, c4, c5, c6, c7, c8, c9] = board
   const winningCombos = [
@@ -12,18 +20,22 @@ function Gameboard () {
     [c1.id, c5.id, c9.id],
     [c3.id, c5.id, c7.id]
   ]
-  const getBoard = () => board
   const getWinningCombos = () => winningCombos
+  const resetBoard = () => {
+    board.forEach((cell) => (cell.textContent = ''))
+    Players().resetPlayers()
+  }
   return {
     getBoard,
-    getWinningCombos
+    getWinningCombos,
+    resetBoard
   }
 }
 
 const Players = () => {
   const form = document.querySelector('form')
   const body = document.querySelector('body')
-  const players = []
+  let players = []
   function createPlayer (name, marker, moves = []) {
     return {
       name,
@@ -43,9 +55,16 @@ const Players = () => {
       greeting.textContent = `${player.name} enters the game with ${player.marker}`
       body.appendChild(greeting)
     } else {
-      if (players[0].marker === '' || players[0].marker !== player.marker) {
+      if (players.length >= 2) {
+        greeting.textContent = 'The game has already started'
+        body.appendChild(greeting)
+      } else if (
+        players.length < 2 &&
+        (players[0].marker === '' || players[0].marker !== player.marker)
+      ) {
+        console.log(players)
         players.push(player)
-        greeting.textContent = `${player.name} enters the game with ${player.marker}`
+        greeting.textContent = `${player.name} enters the OTHER game with ${player.marker}`
         body.appendChild(greeting)
       } else {
         greeting.textContent =
@@ -60,10 +79,16 @@ const Players = () => {
   }
 
   const getActivePlayer = () => activePlayer
-
+  const resetPlayers = () => {
+    players = []
+    for (const player of players) {
+      player.moves = []
+    } // !!!!!!!!
+  }
   return {
     switchPlayer,
-    getActivePlayer
+    getActivePlayer,
+    resetPlayers
   }
 }
 
@@ -75,9 +100,6 @@ function gameController () {
     cell.addEventListener('click', makeMove)
     function makeMove () {
       const activePlayer = player.getActivePlayer()
-      // if (result.textContent.includes('win')) {
-      //   activePlayer.moves = []
-      // } else
       if (cell.textContent === '' && !result.textContent.includes('won')) {
         activePlayer.moves.push(cell.id)
         cell.textContent = activePlayer.marker
@@ -86,8 +108,8 @@ function gameController () {
       board.getWinningCombos().forEach((combo) => {
         const match = combo.every((elem) => activePlayer.moves.includes(elem))
         if (match) {
-          activePlayer.moves = []
           result.textContent = `Congrats ${activePlayer.name}, you won!`
+          board.resetBoard()
         }
       })
       player.switchPlayer()
