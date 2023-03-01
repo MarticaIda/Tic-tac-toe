@@ -43,7 +43,6 @@ const Players = () => {
   }
   let activePlayer
   const greeting = document.createElement('span')
-
   form.addEventListener('submit', (e) => {
     e.preventDefault()
     const name = document.getElementById('username').value
@@ -61,9 +60,8 @@ const Players = () => {
         players.length < 2 &&
         (players[0].marker === '' || players[0].marker !== player.marker)
       ) {
-        console.log(players)
         players.push(player)
-        greeting.textContent = `${player.name} enters the OTHER game with ${player.marker}`
+        greeting.textContent = `${player.name} enters the game with ${player.marker}`
         body.appendChild(greeting)
       } else {
         greeting.textContent =
@@ -71,7 +69,11 @@ const Players = () => {
         body.appendChild(greeting)
       }
     }
-    activePlayer = players[0]
+    if (players[0].marker === 'X') {
+      activePlayer = players[0]
+    } else {
+      activePlayer = players[1]
+    }
     form.reset()
   })
 
@@ -81,9 +83,6 @@ const Players = () => {
 
   const getActivePlayer = () => activePlayer
   const resetPlayers = () => {
-    // for (let i = 0; i <= players.length; i++) {
-    //   players[i].moves.length = 0
-    // }
     players.length = 0
     greeting.textContent = ''
   }
@@ -126,5 +125,3 @@ function gameController () {
   restartBtn.addEventListener('click', restart)
 }
 const game = gameController()
-
-// need to make reset
