@@ -72,7 +72,9 @@ const Players = () => {
       }
     }
     activePlayer = players[0]
+    form.reset()
   })
+
   const switchPlayer = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0]
   }
