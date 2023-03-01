@@ -8,7 +8,6 @@ function Gameboard () {
   }
   const board = document.querySelectorAll('.cell')
   const getBoard = () => board
-  // gameboard.forEach((cell) => (cell.textContent = ''))
   const [c1, c2, c3, c4, c5, c6, c7, c8, c9] = board
   const winningCombos = [
     [c1.id, c2.id, c3.id],
@@ -23,7 +22,6 @@ function Gameboard () {
   const getWinningCombos = () => winningCombos
   const resetBoard = () => {
     board.forEach((cell) => (cell.textContent = ''))
-    Players().resetPlayers()
   }
   return {
     getBoard,
@@ -35,7 +33,7 @@ function Gameboard () {
 const Players = () => {
   const form = document.querySelector('form')
   const body = document.querySelector('body')
-  let players = []
+  const players = []
   function createPlayer (name, marker, moves = []) {
     return {
       name,
@@ -44,9 +42,10 @@ const Players = () => {
     }
   }
   let activePlayer
+  const greeting = document.createElement('span')
+
   form.addEventListener('submit', (e) => {
     e.preventDefault()
-    const greeting = document.createElement('span')
     const name = document.getElementById('username').value
     const marker = document.getElementById('marker').value
     const player = createPlayer(name, marker)
@@ -80,10 +79,11 @@ const Players = () => {
 
   const getActivePlayer = () => activePlayer
   const resetPlayers = () => {
-    players = []
-    for (const player of players) {
-      player.moves = []
-    } // !!!!!!!!
+    // for (let i = 0; i <= players.length; i++) {
+    //   players[i].moves.length = 0
+    // }
+    players.length = 0
+    greeting.textContent = ''
   }
   return {
     switchPlayer,
@@ -96,6 +96,12 @@ function gameController () {
   const board = Gameboard()
   const player = Players()
   const result = document.getElementById('result')
+  const restartBtn = document.getElementById('restart')
+  function restart () {
+    board.resetBoard()
+    player.resetPlayers()
+    result.textContent = ''
+  }
   board.getBoard().forEach((cell) => {
     cell.addEventListener('click', makeMove)
     function makeMove () {
@@ -109,13 +115,13 @@ function gameController () {
         const match = combo.every((elem) => activePlayer.moves.includes(elem))
         if (match) {
           result.textContent = `Congrats ${activePlayer.name}, you won!`
-          board.resetBoard()
         }
       })
       player.switchPlayer()
       console.log(`${activePlayer.name} ` + activePlayer.moves)
     }
   })
+  restartBtn.addEventListener('click', restart)
 }
 const game = gameController()
 
