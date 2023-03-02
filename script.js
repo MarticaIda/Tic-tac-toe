@@ -49,6 +49,7 @@ const Players = () => {
     const name = document.getElementById('username').value
     const marker = document.getElementById('marker').value
     const player = createPlayer(name, marker)
+
     if (players.length === 0) {
       players.push(player)
       alert.textContent = `${player.name} enters the game with ${player.marker}`
@@ -65,6 +66,7 @@ const Players = () => {
         alert.textContent = 'This marker is taken. Please choose another marker'
       }
     }
+
     if (players[0].marker === 'X') {
       activePlayer = players[0]
     } else {
@@ -77,7 +79,6 @@ const Players = () => {
   const switchPlayer = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0]
   }
-
   const getActivePlayer = () => activePlayer
   const resetPlayers = () => {
     players.length = 0
@@ -111,6 +112,7 @@ function gameController () {
       mark.setAttribute('alt', 'marker')
       return mark
     }
+
     function makeMove () {
       const activePlayer = player.getActivePlayer()
       if (activePlayer.marker === 'X') {
@@ -118,10 +120,12 @@ function gameController () {
       } else if (activePlayer.marker === 'O') {
         activePlayer.mark = createMarker('imgs/okta.png')
       }
+
       if (cell.textContent === '' && !result.textContent.includes('won')) {
         activePlayer.moves.push(cell.id)
         cell.appendChild(activePlayer.mark)
       }
+
       // checking against winning combinations
       board.getWinningCombos().forEach((combo) => {
         const match = combo.every((elem) => activePlayer.moves.includes(elem))
@@ -130,7 +134,6 @@ function gameController () {
         }
       })
       player.switchPlayer()
-      console.log(`${activePlayer.name} ` + activePlayer.moves)
     }
   })
   restartBtn.addEventListener('click', restart)
