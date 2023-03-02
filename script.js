@@ -120,20 +120,28 @@ function gameController () {
       } else if (activePlayer.marker === 'O') {
         activePlayer.mark = createMarker('imgs/okta.png')
       }
-
-      if (cell.textContent === '' && !result.textContent.includes('won')) {
-        activePlayer.moves.push(cell.id)
-        cell.appendChild(activePlayer.mark)
+      if (!result.textContent.includes('won')) {
+        if (cell.innerHTML === '') {
+          activePlayer.moves.push(cell.id)
+          cell.appendChild(activePlayer.mark)
+        }
       }
 
       // checking against winning combinations
       board.getWinningCombos().forEach((combo) => {
         const match = combo.every((elem) => activePlayer.moves.includes(elem))
         if (match) {
-          result.textContent = `Congrats ${activePlayer.name}, you won!`
+          result.textContent = `Congrats ${activePlayer.name}, you won! Click 'Restart' to play again`
         }
       })
+
+      const boardArray = Array.from(board.getBoard())
+      const isDraw = boardArray.every((cell) => cell.innerHTML !== '')
+      if (isDraw) {
+        result.textContent = "It's a draw. Click 'Restart' to play again"
+      }
       player.switchPlayer()
+      console.log(`${activePlayer.name} ` + activePlayer.moves)
     }
   })
   restartBtn.addEventListener('click', restart)
