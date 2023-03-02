@@ -34,22 +34,14 @@ const Players = () => {
   const form = document.querySelector('form')
   const players = []
 
-  // const markX = createMarker('imgs/x.png')
-  // const markO = createMarker('imgs/okta.png')
   function createPlayer (name, marker, moves = []) {
     return {
       name,
       marker,
-      moves,
-      createMarker (imgSrc) {
-        const mark = document.createElement('IMG')
-        mark.setAttribute('src', imgSrc)
-        mark.setAttribute('width', '100')
-        mark.setAttribute('alt', 'marker')
-        return mark
-      }
+      moves
     }
   }
+
   let activePlayer
   const alert = document.getElementById('alert')
   form.addEventListener('submit', (e) => {
@@ -57,12 +49,6 @@ const Players = () => {
     const name = document.getElementById('username').value
     const marker = document.getElementById('marker').value
     const player = createPlayer(name, marker)
-    if (player.marker === 'X') {
-      player.createMarker('imgs/x.png')
-    } else if (player.marker === 'O') {
-      player.createMarker('imgs/okta.png')
-    }
-    console.log(player)
     if (players.length === 0) {
       players.push(player)
       alert.textContent = `${player.name} enters the game with ${player.marker}`
@@ -118,11 +104,23 @@ function gameController () {
 
   board.getBoard().forEach((cell) => {
     cell.addEventListener('click', makeMove)
+    function createMarker (imgSrc) {
+      const mark = document.createElement('IMG')
+      mark.setAttribute('src', imgSrc)
+      mark.setAttribute('width', '100')
+      mark.setAttribute('alt', 'marker')
+      return mark
+    }
     function makeMove () {
       const activePlayer = player.getActivePlayer()
+      if (activePlayer.marker === 'X') {
+        activePlayer.mark = createMarker('imgs/x.png')
+      } else if (activePlayer.marker === 'O') {
+        activePlayer.mark = createMarker('imgs/okta.png')
+      }
       if (cell.textContent === '' && !result.textContent.includes('won')) {
         activePlayer.moves.push(cell.id)
-        cell.appendChild(activePlayer.createMarker())
+        cell.appendChild(activePlayer.mark)
       }
       // checking against winning combinations
       board.getWinningCombos().forEach((combo) => {
