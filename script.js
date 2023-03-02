@@ -32,41 +32,51 @@ function Gameboard () {
 
 const Players = () => {
   const form = document.querySelector('form')
-  const body = document.querySelector('body')
   const players = []
+
+  // const markX = createMarker('imgs/x.png')
+  // const markO = createMarker('imgs/okta.png')
   function createPlayer (name, marker, moves = []) {
     return {
       name,
       marker,
-      moves
+      moves,
+      createMarker (imgSrc) {
+        const mark = document.createElement('IMG')
+        mark.setAttribute('src', imgSrc)
+        mark.setAttribute('width', '100')
+        mark.setAttribute('alt', 'marker')
+        return mark
+      }
     }
   }
   let activePlayer
-  const greeting = document.createElement('span')
+  const alert = document.getElementById('alert')
   form.addEventListener('submit', (e) => {
     e.preventDefault()
     const name = document.getElementById('username').value
     const marker = document.getElementById('marker').value
     const player = createPlayer(name, marker)
+    if (player.marker === 'X') {
+      player.createMarker('imgs/x.png')
+    } else if (player.marker === 'O') {
+      player.createMarker('imgs/okta.png')
+    }
+    console.log(player)
     if (players.length === 0) {
       players.push(player)
-      greeting.textContent = `${player.name} enters the game with ${player.marker}`
-      body.appendChild(greeting)
+      alert.textContent = `${player.name} enters the game with ${player.marker}`
     } else {
       if (players.length >= 2) {
-        greeting.textContent = 'The game has already started'
-        body.appendChild(greeting)
+        alert.textContent = 'The game has already started'
       } else if (
         players.length < 2 &&
         (players[0].marker === '' || players[0].marker !== player.marker)
       ) {
         players.push(player)
-        greeting.textContent = `${player.name} enters the game with ${player.marker}`
-        body.appendChild(greeting)
+        alert.textContent = `${player.name} enters the game with ${player.marker}`
       } else {
-        greeting.textContent =
-          'This marker is taken. Please choose another marker'
-        body.appendChild(greeting)
+        alert.textContent = 'This marker is taken. Please choose another marker'
       }
     }
     if (players[0].marker === 'X') {
@@ -74,6 +84,7 @@ const Players = () => {
     } else {
       activePlayer = players[1]
     }
+
     form.reset()
   })
 
@@ -84,32 +95,34 @@ const Players = () => {
   const getActivePlayer = () => activePlayer
   const resetPlayers = () => {
     players.length = 0
-    greeting.textContent = ''
+    alert.textContent = ''
   }
   return {
     switchPlayer,
     getActivePlayer,
-    resetPlayers
+    resetPlayers,
+    alert
   }
 }
 
 function gameController () {
   const board = Gameboard()
   const player = Players()
-  const result = document.getElementById('result')
+  const result = player.alert
   const restartBtn = document.getElementById('restart')
   function restart () {
     board.resetBoard()
     player.resetPlayers()
     result.textContent = ''
   }
+
   board.getBoard().forEach((cell) => {
     cell.addEventListener('click', makeMove)
     function makeMove () {
       const activePlayer = player.getActivePlayer()
       if (cell.textContent === '' && !result.textContent.includes('won')) {
         activePlayer.moves.push(cell.id)
-        cell.textContent = activePlayer.marker
+        cell.appendChild(activePlayer.createMarker())
       }
       // checking against winning combinations
       board.getWinningCombos().forEach((combo) => {

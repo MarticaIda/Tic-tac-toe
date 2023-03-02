@@ -9,22 +9,45 @@
   </head>
   <body>
     <header>Tic-Tac-Toe</header>
-    <form action="">
-      <label for="username">Your name?</label>
-      <input type="text" id="username" />
-      <label for="marker">Choose your marker</label>
-      <select id="marker" name="marker">
-        <option value="X">X</option>
-        <option value="O">O</option>
-      </select>
-      <button type="submit" id="joinBtn">Join the game</button>
-    </form>
+    <div class="to_center" id="form">
+      <form action="">
+        <div class="to_center">
+          <label for="username"
+            >Your name? <input type="text" id="username"
+          /></label>
+          <label for="marker"
+            >Choose your marker
+            <select id="marker" name="marker">
+              <option value="X">X</option>
+              <option value="O">O</option>
+            </select></label
+          >
+        </div>
+        <div class="to_center">
+          <button type="submit" id="joinBtn">Join the game</button>
+        </div>
+      </form>
+    </div>
+    <span class="to_center" id="alert"></span>
     <container>
-      <grid>
-      </grid>
+      <grid> </grid>
     </container>
-    <div id="result"></div>
-    <button id="restart">Restart game</button>
+    <div class="to_center">
+      <button id="restart">Restart game</button>
+    </div>
+    <footer>
+      Image by
+      <a
+        href="https://pixabay.com/users/pexels-2286921/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1866659"
+        >Pexels</a
+      >
+      from
+      <a
+        href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1866659"
+        >Pixabay</a
+      >
+    </footer>
+    <img src="" alt="">
     <script src="script.js" defer></script>
   </body>
 </html>

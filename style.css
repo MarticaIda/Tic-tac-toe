@@ -1,36 +1,110 @@
+:root {
+  --border: 1px solid white;
+  --grid-border: 3px solid white;
+  --font-color: white;
+  --border-radius: 5px;
+  --padding-containers: 2rem;
+}
+
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  border: none;
+}
+
+body {
+  background-image: url("imgs/wood-g6f43f2a16_1920.jpg");
+  background-size: cover;
 }
 
 header {
-  margin: 2rem;
+  padding: var(--padding-containers);
+  color: var(--font-color);
+  font-size: 4rem;
   text-align: center;
-  font-size: xx-large;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+}
+
+.to_center {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+label {
+  color: var(--font-color);
+  font-size: larger;
+  font-weight: bold;
+}
+
+input[type="text"] {
+  margin: 1rem;
+  padding: 0.5rem;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  font-family: inherit;
+}
+
+select {
+  padding: 0.25rem;
+  border-radius: var(--border-radius);
+}
+
 container {
   display: flex;
-  padding: 2rem;
   justify-content: center;
+  padding: var(--padding-containers);
 }
+
 grid {
   display: grid;
-  grid-template-columns: repeat(3, 80px);
-  grid-template-rows: repeat(3, 80px);
-  margin: 2rem;
+  grid-template-columns: repeat(3, 7rem);
+  grid-template-rows: repeat(3, 7rem);
+  padding: var(--padding-containers);
 }
 
 .cell {
-  border: 1px solid black;
-  text-align: center;
+  color: var(--font-color);
   font-size: xx-large;
+  text-align: center;
 }
 
-#result {
-  text-align: center;
-  font-size: xx-large;
+grid > .cell:nth-child(3n),
+grid > .cell:nth-child(3n-1) {
+  border-left: var(--grid-border);
 }
 
-button{
-    
+grid > .cell:nth-child(n + 4) {
+  border-top: var(--grid-border);
+}
+
+#alert {
+  height: 2rem;
+  padding: var(--padding-containers);
+  color: var(--font-color);
+  font-size: xx-large;
+  text-align: center;
+}
+
+button {
+  padding: 0.5rem;
+  background-color: transparent;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  color: var(--font-color);
+  font-family: inherit;
+  font-size: larger;
+  font-weight: bold;
+}
+
+footer {
+  padding: var(--padding-containers);
+  color: var(--font-color);
 }
